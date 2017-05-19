@@ -83,7 +83,7 @@ public class register extends AppCompatActivity {
                     get_data get_data = new get_data(register.this);
                     try {
                         get_data.execute(myconfig.getRegister()
-                            +"?user="+userString+"&"
+                                +"?user="+userString+"&"
                                 +"password="+passwordString+"&"
                                 +"status="+thecnician
                         );

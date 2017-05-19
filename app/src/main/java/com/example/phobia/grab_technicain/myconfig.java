@@ -5,7 +5,12 @@ package com.example.phobia.grab_technicain;
  */
 
 public class myconfig {
-    private String register = "http://10.5.14.174:8081/Final_Project/register.php";
+    private String register = "http://10.5.9.153:8081/Final_Project/register.php";
+    private String login = "http://10.5.9.153:8081/Final_Project/login.php";
+
+    public String getLogin() {
+        return login;
+    }
 
     public String getRegister() {
         return register;

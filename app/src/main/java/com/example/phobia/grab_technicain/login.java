@@ -19,9 +19,8 @@ public class login extends AppCompatActivity {
     private EditText userEditText, passwordEditText;
     private String userString, passwordString;
     private TextView registerTextView;
-    private int customer = 1;
-    private int thecnician  = 2;
     private String jsonrespone2,message, data_user;
+    private Boolean choosestatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +40,29 @@ public class login extends AppCompatActivity {
                         myconfig myconfig = new myconfig();
                         get_data get_data = new get_data(login.this);
                         try {
-                                
-                        }
-                        catch (Exception e) {
+                            get_data.execute(myconfig.getLogin()
+                                    +"?user="+userString+"&"
+                                    +"password="+passwordString+"&"
+                                    +"status="+choosestatus
+                            );
+                            jsonrespone2 = get_data.get().toString();
+                            Log.d("jsonrespone2", "jsonrespone2==>" + jsonrespone2.toString());
+                            JSONObject jsonObject = new JSONObject(jsonrespone2);
+
+                            choosestatus = jsonObject.getBoolean("status");
+                            message = jsonObject.getString("message");
+                            if (choosestatus == true) {
+                                Toast.makeText(login.this, message, Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(login.this,register.class);
+//                                startActivity(intent);
+                            } else {
+                                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Log.d("choosestatus", "choosestatus==>" + e.toString());
                         }
                     }
                 }
-
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
