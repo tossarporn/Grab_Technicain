@@ -19,7 +19,10 @@ public class login extends AppCompatActivity {
     private EditText userEditText, passwordEditText;
     private String userString, passwordString;
     private TextView registerTextView;
-    private String jsonrespone2,message, data_user;
+    private String jsonrespone2,message;
+    private int data_user;
+    private int customer = 1;
+    private int technician = 2;
     private Boolean choosestatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +45,24 @@ public class login extends AppCompatActivity {
                         try {
                             get_data.execute(myconfig.getLogin()
                                     +"?user="+userString+"&"
-                                    +"password="+passwordString+"&"
-                                    +"status="+choosestatus
+                                    +"password="+passwordString
+
                             );
                             jsonrespone2 = get_data.get().toString();
                             Log.d("jsonrespone2", "jsonrespone2==>" + jsonrespone2.toString());
                             JSONObject jsonObject = new JSONObject(jsonrespone2);
-
                             choosestatus = jsonObject.getBoolean("status");
                             message = jsonObject.getString("message");
-                            if (choosestatus == true) {
-                                Toast.makeText(login.this, message, Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(login.this,register.class);
-//                                startActivity(intent);
+                            String str_user = jsonObject.getString("data_user");
+                            JSONObject obj_usr = new JSONObject(str_user);
+
+                            Log.d("object_user", "object_user==>" + obj_usr.getString("status"));
+                            if (obj_usr.getString("status").equals("1")) {
+                                Toast.makeText(login.this, "user", Toast.LENGTH_LONG).show();
+                            } else if (obj_usr.getString("status").equals("2")) {
+                                Toast.makeText(login.this, "technician", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             Log.d("choosestatus", "choosestatus==>" + e.toString());
