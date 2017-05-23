@@ -58,9 +58,13 @@ public class login extends AppCompatActivity {
 
                             Log.d("object_user", "object_user==>" + obj_usr.getString("status"));
                             if (obj_usr.getString("status").equals("1")) {
-                                Toast.makeText(login.this, "user", Toast.LENGTH_LONG).show();
+                                Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(login.this,customer.class);
+                                startActivity(intent);
                             } else if (obj_usr.getString("status").equals("2")) {
-                                Toast.makeText(login.this, "technician", Toast.LENGTH_LONG).show();
+                                Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
+//                                Intent intent = new Intent();
+//                                startActivity(intent);
                             } else {
                                 Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
                             }
