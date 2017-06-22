@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class customer extends FragmentActivity implements OnMapReadyCallback {
     private String jsonresMap ;
-
+    private String text;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
