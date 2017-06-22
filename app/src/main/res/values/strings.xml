@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Grab_Technicain</string>
+    <string name="app_name">Grab_Technician : กรุงเทพมหานคร</string>
     <string name="opendrawer">Open</string>
-    <string name="closedarwer">close</string>
-    <string name="homefrag">Home</string>
+    <string name="title_activity_maps_customer">Map</string>
 </resources>

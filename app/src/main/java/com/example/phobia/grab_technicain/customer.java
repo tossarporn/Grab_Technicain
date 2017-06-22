@@ -1,91 +1,95 @@
 package com.example.phobia.grab_technicain;
 
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
-import java.util.ArrayList;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class customer extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private ActionBar actionBar;
-    private ListView navList;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
-    private DrawerLayout drawerLayout;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+public class customer extends FragmentActivity implements OnMapReadyCallback {
+    private String jsonresMap ;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
-        bindwidget();
-        ArrayList<String> navArray = new ArrayList<String>();
-        navArray.add("Home");
-        navArray.add("Fragment1");
-        navArray.add("Fragment2");
-        navArray.add("Fragment3");
-        navList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, navArray);
-        navList.setAdapter(adapter);
-        navList.setOnItemClickListener(this);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.opendrawer, R.string.closedarwer);
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        fragmentManager = getSupportFragmentManager();
-        loadSelection(0);
-    }//main method
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
 
-    private void loadSelection(int i) {
-        switch (i) {
-            case 0:
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        GoogleMap mMap = googleMap;
+
+        Double lat = 13.757792;
+        Double lng = 100.492984;
+        LatLng Bangkok = new LatLng(lat, lng);
+        // Add a marker in Sydney and move the camera
+//        LatLng sydney = new LatLng(-13.757792, 100.492984);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        myconfig config = new myconfig();
+        try {
+            get_data allmap = new get_data(getApplicationContext());
+            allmap.execute(config.getShow_all_marker());
+            jsonresMap = allmap.get().toString();
+            JSONArray jsonArray = new JSONArray(jsonresMap);
+
+//            Log.d("map","get json =>"+jsonresMap+" size"+jsonArray.length());
+
+            for (int i =0 ;i<jsonArray.length();i++ ){
+
+                JSONObject json_map_tec = jsonArray.getJSONObject(i);
+                Log.d("map","get json =>"+json_map_tec.getString("name_store").toString());
+                Double lat_loca = json_map_tec.getDouble("lat");
+                Double lng_loca = json_map_tec.getDouble("lng");
+                LatLng location_store = new LatLng(lat_loca, lng_loca);
+                String name_store = json_map_tec.getString("name_store");
+                String type = json_map_tec.getString("type_name");
+                String area = json_map_tec.getString("area_name");
+                mMap.addMarker(new MarkerOptions().position(location_store).title(name_store).snippet("รับซ้อม "+type+" ("+area+")"));
+            }
+
+        }catch (Exception e){
+            Log.d("map","get json =>"+e.toString());
         }
-    }
+        // Add a marker
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(Bangkok));
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        actionBarDrawerToggle.syncState();
+        //Zoom
+        mMap.animateCamera(CameraUpdateFactory
+                .newLatLngZoom(Bangkok, 9));
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-            if (id == android.R.id.home) {
-                if (drawerLayout.isDrawerOpen(navList)) {
-                    drawerLayout.closeDrawer(navList);
-                }
-                else drawerLayout.openDrawer(navList);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        loadSelection(i);
-        drawerLayout.closeDrawer(navList);
-    }
-
-    private void bindwidget() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-        navList = (ListView) findViewById(R.id.navlist);
-    }
-
 }
+//    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//            switch (item.getItemId()) {
+//                case R.id.ic_magnifier://id form directory menu
+//                    Search search = new Search();//Class fragment
+//                    android.app.FragmentManager manager = getFragmentManager();
+//                    //manager.beginTransaction().replace(R.id.map,search,search);//id form FrameLayout
+//                    return true;
+//            }
+//            return false;
+//        }
+//    };
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+//        super.onCreate(savedInstanceState, persistentState);
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_bar);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//    }
+

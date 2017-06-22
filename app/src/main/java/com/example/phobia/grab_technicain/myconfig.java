@@ -5,14 +5,20 @@ package com.example.phobia.grab_technicain;
  */
 
 public class myconfig {
-    private String register = "http://10.5.14.109:8081/Final_Project/register.php";
-    private String login = "http://10.5.14.109:8081/Final_Project/login.php";
-
+    private String ip = "10.5.20.187";
+    private String port = "8081";
+    private String register = "http://"+ip+":"+port+"/Final_Project/service/register.php";
+    private String login = "http://"+ip+":"+port+"/Final_Project/service/login.php";
+    private String show_all_marker ="http://"+ip+":"+port+"/Final_Project/service/get_allTechnician.php";
     public String getLogin() {
         return login;
     }
 
     public String getRegister() {
         return register;
+    }
+
+    public String getShow_all_marker() {
+        return show_all_marker;
     }
 }
