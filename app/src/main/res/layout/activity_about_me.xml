@@ -4,29 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".customer"
-    >
+    tools:context=".About_me">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="AboutMe"
+        android:textSize="30dp" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="?attr/actionBarSize">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            >
+            android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/container">
-    </FrameLayout>
-
     <RelativeLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
@@ -42,6 +38,5 @@
             app:menu="@menu/activity_menu">
         </android.support.design.widget.BottomNavigationView>
     </RelativeLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>

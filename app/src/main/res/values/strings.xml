@@ -2,4 +2,13 @@
     <string name="app_name">Grab_Technician : กรุงเทพมหานคร</string>
     <string name="opendrawer">Open</string>
     <string name="title_activity_maps_customer">Map</string>
+
+    <!--Appbar ConTent-->
+    <string name="Search">ค้นหา</string>
+    <string name="Favorite">ที่ชื่นชอบ</string>
+    <string name="AboutMe">เกี่ยวกับฉัน</string>
+    <!--End Appbar ConTent-->
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

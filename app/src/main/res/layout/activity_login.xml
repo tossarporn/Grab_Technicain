@@ -76,7 +76,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="User ID"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -99,7 +100,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="1" />
         </LinearLayout>
 
         <LinearLayout
