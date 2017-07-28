@@ -8,7 +8,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +26,9 @@ import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
 public class customer extends AppCompatActivity implements OnMapReadyCallback {
     ArrayList<String> item = new ArrayList<>();
+    ArrayList<String> item_index = new ArrayList<>();
     SpinnerDialog spinnerDialog;
+    myconfig config = new myconfig();
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,7 +40,7 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
 
                     return true;
                 case R.id.ic_heart:
-                    Intent heartIntent = new Intent(customer.this,Favorite.class);
+                    Intent heartIntent = new Intent(customer.this,Search.class);
                     startActivity(heartIntent);
                     return true;
                 case R.id.ic_person:
@@ -65,15 +66,34 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
         spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String item, int position) {
-                Toast.makeText(customer.this,"select"+item,Toast.LENGTH_LONG).show();
+                Intent search_technician = new Intent(customer.this,Search_Technician.class);
+                search_technician.putExtra("area_id",item_index.get(position));
+                startActivity(search_technician);
+
+//                Toast.makeText(customer.this,"select"+item_index.get(position),Toast.LENGTH_LONG).show();
+
             }
         });
  }
 
     private void iniItem() {
-        for(int i=0;i<100;i++){
-            item.add("itme"+i);
+    get_data all_area = new  get_data(getApplicationContext());
+
+        all_area.execute(config.getShow_AreaInbangkok());
+        try{
+            String str_all_area = all_area.get().toString();
+            JSONArray all_area_Array = new JSONArray(str_all_area);
+            for (int index = 0 ;index<all_area_Array.length(); index++ ){
+                JSONObject json_area = all_area_Array.getJSONObject(index);
+
+                item.add(json_area.getString("area_name"));
+                item_index.add(json_area.getString("id"));
+            }
+
+        }catch (Exception e){
+            Log.d("iniItem", "iniItem =>" + e.toString());
         }
+
     }
 
     @Override
@@ -87,7 +107,7 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
        LatLng sydney = new LatLng(-13.757792, 100.492984);
        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-       myconfig config = new myconfig();
+
        try {
            get_data allmap = new get_data(getApplicationContext());
            allmap.execute(config.getShow_all_marker());
