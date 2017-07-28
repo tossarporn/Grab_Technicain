@@ -42,7 +42,13 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Search" />
+        <activity
+            android:name=".Search"/>
+            <!--android:label="@string/Search"-->
+            <!--android:parentActivityName=".Search"/>-->
+
+
+
         <activity android:name=".Favorite" />
         <activity android:name=".About_me"></activity>
     </application>

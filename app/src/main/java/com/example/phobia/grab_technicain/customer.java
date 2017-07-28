@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,14 +20,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
+import in.galaxyofandroid.spinerdialog.SpinnerDialog;
+
 public class customer extends AppCompatActivity implements OnMapReadyCallback {
+    ArrayList<String> item = new ArrayList<>();
+    SpinnerDialog spinnerDialog;
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.ic_magnifier:
-                    Intent searchIntent = new Intent(customer.this,Search.class);
-                    startActivity(searchIntent);
+                    spinnerDialog.showSpinerDialog();
+
                     return true;
                 case R.id.ic_heart:
                     Intent heartIntent = new Intent(customer.this,Favorite.class);
@@ -50,9 +60,23 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
        mapFragment.getMapAsync(this);
+        iniItem();
+        spinnerDialog = new SpinnerDialog(customer.this,item,"Select Area");
+        spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+                Toast.makeText(customer.this,"select"+item,Toast.LENGTH_LONG).show();
+            }
+        });
  }
 
-   @Override
+    private void iniItem() {
+        for(int i=0;i<100;i++){
+            item.add("itme"+i);
+        }
+    }
+
+    @Override
    public void onMapReady(GoogleMap googleMap) {
        GoogleMap mMap = googleMap;
 

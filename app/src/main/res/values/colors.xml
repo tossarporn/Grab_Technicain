@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorDark">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <!--Color Appbar-->
+    <color name="colorLightBlue">#03a9f4</color>
 </resources>

@@ -1,14 +1,14 @@
 package com.example.phobia.grab_technicain;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 
 public class Favorite extends AppCompatActivity {
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -24,7 +24,9 @@ public class Favorite extends AppCompatActivity {
                     Intent aboutmeIntent = new Intent(Favorite.this,About_me.class);
                     startActivity(aboutmeIntent);
                     return true;
+
             }
+
             return false;
         }
     };
