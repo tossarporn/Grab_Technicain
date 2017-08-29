@@ -63,10 +63,9 @@ public class login extends AppCompatActivity {
                                 Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
 //                                Intent intent = new Intent();
 //                                startActivity(intent);
-                            } else {
-                                Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
+                            Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
                             Log.d("choosestatus", "choosestatus==>" + e.toString());
                         }
                     }
