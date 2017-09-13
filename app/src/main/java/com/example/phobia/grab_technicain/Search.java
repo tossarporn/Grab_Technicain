@@ -1,5 +1,6 @@
 package com.example.phobia.grab_technicain;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -53,11 +54,9 @@ public class Search extends AppCompatActivity {
 //
 //        //TitleBar
         Toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
-        Toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(Toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         //spiner for database
 
        try {
@@ -92,5 +91,6 @@ public class Search extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
    }
+
 }
 

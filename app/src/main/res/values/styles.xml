@@ -12,13 +12,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     
-    <style name="CustonActionBar" parent="@style/TextAppearance.AppCompat.Title">
+    <style name="CustonActionBar" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:titleTextStyle">@style/TextColor</item>
     </style>
-    
     
 <style name="TextColor" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
     <item name="android:textColor">@android:color/white</item>
 </style>
+    
+    <style name="AppBaseThemeMaterial" parent="Theme.AppCompat.Light">
+        <item name="actionModeStyle">@style/AppBaseThemeMaterial.ActionMode</item>
+    </style>
 
+   <style name="AppBaseThemeMaterial.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+       <item name="background">@color/colorAccent</item>
+   </style>
 </resources>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".Search">
-    <include layout="@layout/app_bar_search"/>
+    <include layout="@layout/back_buttom_arrow"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
