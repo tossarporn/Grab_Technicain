@@ -42,16 +42,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDMmXYA58ugI7VAlF3QxrkZc90Hka5jA3s" />
 
-        <activity android:name=".Search"
-         android:label="@string/Search" />
+        <activity
+            android:name=".Search"
+            android:label="@string/Search" />
         <!-- android:parentActivityName=".Search"/> -->
 
         <activity android:name=".Favorite" />
         <activity android:name=".About_me" />
         <activity
             android:name=".Search_Technician"
-            android:label="@string/title_activity_search__technician">
-        </activity>
+            android:label="@string/title_activity_search__technician"></activity>
     </application>
 
 </manifest>

@@ -34,7 +34,6 @@ public class Search extends AppCompatActivity {
                     Intent aboutmeIntent = new Intent(Search.this,About_me.class);
                     startActivity(aboutmeIntent);
                     return true;
-
                 }
 
                 return false;

@@ -63,6 +63,7 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
        mapFragment.getMapAsync(this);
         iniItem();
         spinnerDialog = new SpinnerDialog(customer.this,item,"Select Area");
+
         spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String item, int position) {

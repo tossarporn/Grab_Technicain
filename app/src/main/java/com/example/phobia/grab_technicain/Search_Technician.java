@@ -3,6 +3,8 @@ package com.example.phobia.grab_technicain;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,8 +31,43 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.technician_map);
         mapFragment.getMapAsync(this);
+        detail_thecnician();
+
+    }
+
+    private void detail_thecnician() {
+        ListView detailListView;
+        detailListView = (ListView) findViewById(R.id.Detail_Technician);
+        String Tehnician_string = getIntent().getStringExtra("area_id");
+        get_data detail_technician = new get_data(getApplicationContext());
+        detail_technician.execute(myconfig.getShow_all_marker()+"?area_id="+Tehnician_string);
 
 
+        try {
+
+            String all_detail = detail_technician.get().toString();
+            Log.d("all_detail", "all_detail==>"+all_detail);
+
+            //JsonArray
+            JSONArray detail_array = new JSONArray(all_detail);
+            final String detail_name_store[] = new String[detail_array.length()];
+            final String detail_type[] = new String[detail_array.length()];
+
+            for (int i=0;i<detail_array.length();i++) {
+
+                JSONObject json_detail_tehcnician = detail_array.getJSONObject(i);
+                Log.d("check_detail", "get_json_detail==>" + json_detail_tehcnician);
+                 detail_name_store[i] = json_detail_tehcnician.getString("name_store");
+                 detail_type[i] = json_detail_tehcnician.getString("type_name");
+            }
+            Adapter_Technician adapter_technician = new Adapter_Technician(detail_name_store,detail_type,Search_Technician.this);
+            detailListView.setAdapter(adapter_technician);
+
+        }
+
+        catch (Exception e) {
+            Log.d("detail_technician", "detail==>" + e.toString());
+        }
 
     }
 
@@ -56,7 +93,9 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
         try {
             String str_all_thecnician = all_technician.get().toString();
             Log.d("str_all_thecnician", " str_all_thecnician=>" + str_all_thecnician);
+
             JSONArray all_thecnician_array = new JSONArray(str_all_thecnician);
+
 
             if (all_thecnician_array.length() == 0) {
                 Toast.makeText(Search_Technician.this, "ไม่มีร้านซ่อมอุปกรณ์ไฟฟ้าอยู่ในเขตนี้ครับ", Toast.LENGTH_LONG).show();
@@ -65,17 +104,19 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
             for (int i =0 ;i<all_thecnician_array.length();i++ ){
 
                 JSONObject json_map_tec = all_thecnician_array.getJSONObject(i);
-                Log.d("map","get json =>"+json_map_tec.getString("name_store").toString());
+
+//                Log.d("map","get json =>"+json_map_tec.getString("name_store").toString());
                 Double lat_loca = json_map_tec.getDouble("lat");
                 Double lng_loca = json_map_tec.getDouble("lng");
                 center = new LatLng(lat_loca,lng_loca);
                 LatLng location_store = new LatLng(lat_loca, lng_loca);
+
                 String name_store = json_map_tec.getString("name_store");
                 String type = json_map_tec.getString("type_name");
                 String area = json_map_tec.getString("area_name");
+
                 mMap.addMarker(new MarkerOptions().position(location_store).title(name_store).snippet("รับซ้อม "+type+" ("+area+")"));
             }
-
             move_cam(center);
 
         } catch (Exception e) {
@@ -92,5 +133,6 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
         mMap.animateCamera(CameraUpdateFactory
                 .newLatLngZoom(latLng, 12));
     }
+
 
 }
