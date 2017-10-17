@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Adapter_Technician extends BaseAdapter {
 
    private String[] detail_name_store, detail_type;
     private Context context;
-    private TextView date,price, type;
+    private TextView name_store,date,price, type;
 
     public Adapter_Technician(String[] detail_name_store, String[] detail_type, Context context) {
 
@@ -49,8 +50,11 @@ public class Adapter_Technician extends BaseAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.activity_detail_technician, viewGroup, false);
+        name_store = (TextView) view1.findViewById(R.id.name_store);
         type = (TextView) view1.findViewById(R.id.type);
+        name_store.setText(detail_name_store[i]);
         type.setText(detail_type[i]);
         return view1;
     }
+
 }

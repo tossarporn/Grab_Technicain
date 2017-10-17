@@ -51,7 +51,9 @@
         <activity android:name=".About_me" />
         <activity
             android:name=".Search_Technician"
-            android:label="@string/title_activity_search__technician"></activity>
+            android:label="@string/title_activity_search__technician" />
+        <activity android:name=".Show_detail" />
+        <activity android:name=".TechnicianForRent"></activity>
     </application>
 
 </manifest>

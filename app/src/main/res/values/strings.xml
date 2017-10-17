@@ -15,5 +15,30 @@
 
     <string name="date_detail"> เวลาทำการ:</string>
     <string name="low_price"> ราคาขั้นต่ำ:</string>
-    <string name="category"> ประเภทที่รับซ่อม:</string>
+    <string name="category"> อุปกรณ์ที่รับซ่อม:</string>
+    <string name="name_store">ชื่อร้าน</string>
+
+    <!--RatingBar-->
+    <string name="RatingAudit">ระดับความพึงพอใจ</string>
+
+    <!--DetailTehcnician-->
+    <string name="Detail">รายละเอียด :</string>
+    <string name="RepairEquipment">อุปกรณ์ที่รับซ่อม :</string>
+    <string name="cost">ราคาต่อชิ้น :</string>
+    <string name="Address">ที่อยูของ่ร้าน :</string>
+    <string name="ButtonForRent">จอง</string>
+    
+    <!--TechnicianForRent-->
+    <string name="AddressTechnician">ใส่ที่อยุ่ :</string>
+    <string name="DateTechnician">ใส่วันที่ :</string>
+    <string name="TimeTechnician">ใส่เวลา :</string>
+    <string name="Repair">ซ่อมอะไร :</string>
+
+    <!--Button-->
+    <string name="ok">ตกลง</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="back">ย้อนกลับ</string>
+    <string name="logout">ออกจากระบบ</string>
+    <string name="AllDetail">ดูรายละเอียดทั้งหมด</string>
+
 </resources>

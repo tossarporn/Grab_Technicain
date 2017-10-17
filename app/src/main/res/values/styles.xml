@@ -27,4 +27,18 @@
    <style name="AppBaseThemeMaterial.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
        <item name="background">@color/colorAccent</item>
    </style>
+
+    <!--Rating Bar-->
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <!--SizeRatingBar-->
+    <style name="SizeBar" parent="Widget.AppCompat.RatingBar.Indicator">
+        <item name="android:minHeight">38dip</item>
+        <item name="android:minWidth">38dip</item>
+    </style>
+
+    <style name="SizeBarSmall" parent="Widget.AppCompat.RatingBar.Small">
+    </style>
 </resources>
