@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="AppTheme.Base">
         <!-- Customize your theme here. -->
         <item name="android:actionBarSplitStyle">@style/CustonActionBar</item>
+        <item name="windowActionBar">false</item>
     </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
@@ -31,6 +32,7 @@
     <!--Rating Bar-->
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/bb_inActiveBottomBarItemColor</item>
     </style>
 
     <!--SizeRatingBar-->
@@ -40,5 +42,9 @@
     </style>
 
     <style name="SizeBarSmall" parent="Widget.AppCompat.RatingBar.Small">
+    </style>
+    
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
 </resources>

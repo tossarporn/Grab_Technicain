@@ -1,9 +1,15 @@
 package com.example.phobia.grab_technicain;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +38,9 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.technician_map);
         mapFragment.getMapAsync(this);
         detail_thecnician();
-
     }
+
+
 
     private void detail_thecnician() {
         ListView detailListView;
@@ -41,7 +48,6 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
         String Tehnician_string = getIntent().getStringExtra("area_id");
         get_data detail_technician = new get_data(getApplicationContext());
         detail_technician.execute(myconfig.getShow_all_marker()+"?area_id="+Tehnician_string);
-
 
         try {
 
@@ -62,7 +68,12 @@ public class Search_Technician extends FragmentActivity implements OnMapReadyCal
             }
             Adapter_Technician adapter_technician = new Adapter_Technician(detail_name_store,detail_type,Search_Technician.this);
             detailListView.setAdapter(adapter_technician);
-
+            detailListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    startActivity(new Intent(getApplicationContext(),Show_detail.class));
+                }
+            });
         }
 
         catch (Exception e) {

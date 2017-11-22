@@ -61,8 +61,7 @@ public class login extends AppCompatActivity {
                                 startActivity(intent);
                             } else if (obj_usr.getString("status").equals("2")) {
                                 Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent();
-//                                startActivity(intent);
+                                startActivity(new Intent(getApplicationContext(), Main_Technician.class));
                             }
                         } catch (Exception e) {
                             Toast.makeText(login.this, message, Toast.LENGTH_LONG).show();

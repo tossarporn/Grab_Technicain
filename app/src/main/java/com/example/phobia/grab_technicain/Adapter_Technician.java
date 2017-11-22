@@ -8,8 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -19,9 +24,12 @@ import java.util.ArrayList;
 
 public class Adapter_Technician extends BaseAdapter {
 
-   private String[] detail_name_store, detail_type;
+    private String[] detail_name_store, detail_type;
     private Context context;
     private TextView name_store,date,price, type;
+    private ImageView imageView;
+    private Button show_detail_Button;
+    private RatingBar ratingBar;
 
     public Adapter_Technician(String[] detail_name_store, String[] detail_type, Context context) {
 
@@ -50,8 +58,19 @@ public class Adapter_Technician extends BaseAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view1 = inflater.inflate(R.layout.activity_detail_technician, viewGroup, false);
+
+        //bind widget
         name_store = (TextView) view1.findViewById(R.id.name_store);
         type = (TextView) view1.findViewById(R.id.type);
+        imageView = (ImageView) view1.findViewById(R.id.launc);
+        ratingBar = (RatingBar) view1.findViewById(R.id.GetRatBar);
+
+        //Click ButtonListView
+        show_detail_Button = (Button) view1.findViewById(R.id.button_detail);
+        show_detail_Button.setFocusable(false);
+        show_detail_Button.setClickable(false);
+
+        //show data
         name_store.setText(detail_name_store[i]);
         type.setText(detail_type[i]);
         return view1;

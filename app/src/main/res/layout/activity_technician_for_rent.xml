@@ -6,16 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.phobia.grab_technicain.TechnicianForRent">
 
-    <include layout="@layout/back_buttom_arrow"></include>
+    <!--<include layout="@layout/back_buttom_arrow"-->
+        <!--android:id="@+id/include"></include>-->
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteY="86dp"
         android:id="@+id/linearLayout8"
-        android:layout_marginLeft="41dp"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -102,9 +106,12 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="40dp"
         android:text="@string/ok"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
-        tools:layout_editor_absoluteX="122dp" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
