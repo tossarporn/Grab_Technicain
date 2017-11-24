@@ -29,7 +29,7 @@
     <string name="ButtonForRent">จอง</string>
 
     <!--TechnicianForRent-->
-    <string name="AddressTechnician">ใส่ที่อยุ่ :</string>
+    <string name="AddressTechnician">ใส่ที่อยู่ :</string>
     <string name="DateTechnician">ใส่วันที่ :</string>
     <string name="TimeTechnician">ใส่เวลา :</string>
     <string name="Repair">อุปรณ์ที่จะซ่อม :</string>
@@ -45,5 +45,19 @@
     <string name="bar_chart">ดูสถิติ</string>
     <string name="build_store">สร้างร้านค้า</string>
     <string name="log_out">ออกจากระบบ</string>
+
+    <!--build_store-->
+    <string name="time_start">เวลาเปิด</string>
+    <string name="time_end">เวลาปิด</string>
+    <string name="store_address">ใส่ที่อยู่ร้าน :</string>
+    <string name="store">กรุณากรอกชื่อร้าน</string>
+    <string name="equipment_cost">ราคาเริ่มต้น</string>
+    <string name="location">ที่ตั้ง :</string>
+    <string name="look_location">ดูที่ตั้ง</string>
+        <!--build_store_address-->
+            <string name="street">ถนน</string>
+            <string name="District">แขวง</string>
+            <string name="county">เขต</string>
+            <string name="house_number">บ้านเลขที่</string>
 
 </resources>

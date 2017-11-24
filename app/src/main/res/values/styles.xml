@@ -47,4 +47,16 @@
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
+
+    <!--ColorButton_BuildStore-->
+    <style name="MyRaisedButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/HighLight</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:textColor">@color/HighLight</item>
+    </style>
+    <style name="MyRaisedButton2" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/HighLight</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:textColor">@color/HighLight</item>
+    </style>
 </resources>

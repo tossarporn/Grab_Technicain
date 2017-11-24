@@ -7,4 +7,6 @@
     <color name="colorWhite">#FFFFFF</color>
     <!--Color Appbar-->
     <color name="colorLightBlue">#03a9f4</color>
+    <!--ColorButton_BuildStore-->
+    <color name="HighLight">#FFFFFF</color>
 </resources>
