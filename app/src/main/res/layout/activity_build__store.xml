@@ -10,32 +10,33 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="-"
         android:textSize="30sp"
         app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintLeft_toRightOf="@+id/time_start"
         app:layout_constraintRight_toLeftOf="@+id/time_end"
-        app:layout_constraintTop_toBottomOf="@+id/equipment"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/equipment" />
 
     <ImageView
         android:id="@+id/picture_store"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_home_black_24dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:srcCompat="@drawable/ic_home_black_24dp" />
 
     <LinearLayout
+        android:id="@+id/store"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -44,9 +45,10 @@
         android:paddingRight="20dp"
         app:layout_constraintTop_toBottomOf="@+id/picture_store"
         tools:layout_editor_absoluteX="8dp"
-        android:id="@+id/store">>
+        android:layout_marginTop="8dp">>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -61,17 +63,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/equipment"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
         android:orientation="vertical"
         android:paddingEnd="20dp"
         android:paddingLeft="20dp"
-        tools:layout_editor_absoluteX="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/store"
-        android:id="@+id/equipment">
+        tools:layout_editor_absoluteX="8dp">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/repair_equipment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -89,13 +92,14 @@
         android:id="@+id/time_start"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         app:layout_constraintTop_toBottomOf="@+id/equipment"
         tools:layout_editor_absoluteX="16dp">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/time_work_begin"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -109,22 +113,23 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/time_end"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical"
         app:layout_constraintLeft_toRightOf="@+id/time_start"
-        app:layout_constraintTop_toBottomOf="@+id/equipment"
-        android:id="@+id/time_end"
-        android:layout_marginStart="32dp">
+        app:layout_constraintTop_toBottomOf="@+id/equipment">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/time_work_end"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/time_end"
+                android:id="@+id/end_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/time_end"
@@ -138,13 +143,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical"
         android:paddingRight="20dp"
         app:layout_constraintLeft_toRightOf="@+id/time_end"
         app:layout_constraintTop_toBottomOf="@+id/equipment">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/cost_begin"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -163,7 +169,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/time_start"
         app:layout_constraintTop_toBottomOf="@+id/time_start">
@@ -186,6 +192,7 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/house_number"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content">
 
@@ -206,6 +213,7 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/streert_address"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content">
 
@@ -225,11 +233,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="75dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/address1"
-        app:layout_constraintTop_toBottomOf="@+id/address1"
-        android:layout_marginStart="75dp">
+        app:layout_constraintTop_toBottomOf="@+id/address1">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -237,10 +245,12 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/distric_address"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/district"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/District"
@@ -254,10 +264,12 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/area_address"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/county"
@@ -271,18 +283,19 @@
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/address2"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/address1"
-        android:layout_marginStart="8dp">
+        app:layout_constraintTop_toBottomOf="@+id/address2">
 
         <TextView
             android:id="@+id/textView24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginLeft="13dp"
             android:layout_weight="1"
             android:text="@string/location"
             android:textSize="18sp" />
@@ -294,10 +307,12 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/lat_location"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/lat_store"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="lat"
@@ -311,10 +326,12 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/lng_location"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/lng_store"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="lng"
@@ -323,12 +340,13 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/location_store"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:background="@drawable/ripple"
+            android:gravity="center"
             android:text="@string/look_location"
             android:textSize="18sp" />
     </LinearLayout>
@@ -336,16 +354,20 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/location"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp">
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/back"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -353,7 +375,7 @@
             android:theme="@style/MyRaisedButton2" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/ok"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"

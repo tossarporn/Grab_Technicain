@@ -59,5 +59,9 @@
             <string name="District">แขวง</string>
             <string name="county">เขต</string>
             <string name="house_number">บ้านเลขที่</string>
-
+                <!--CheckErrorEditText-->
+                    <string name="err_msg_name">Please enter a Name</string>
+                    <string name="err_msg_required">กรุณากรอกข้อมูลให้ครบ</string>
+                    <string name="err_msg_repair">Please enter a Repair</string>
+                    <string name="err_msg_start_location">กรุณากดตรงดูที่ตั้ง</string>
 </resources>
