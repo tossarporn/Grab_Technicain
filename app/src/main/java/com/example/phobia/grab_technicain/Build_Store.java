@@ -5,15 +5,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.os.EnvironmentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,16 +30,22 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class Build_Store extends AppCompatActivity {
-    private ImageView create_storeImageView;
     private EditText name_storeEditText,repairEditText,start_timeEditText,end_timeEditText,costEditText,home_numberEditText,
                      streetEditText,districEditText,areaEditText,latEditText,lngEditText;
     private Button okButton,backButton,locationButton;
     private TextInputLayout name_storeInputLayout,repairInputLayout,start_timeInputLayout,end_timeInputLayout,costInputLayout,home_numInputLayout
                             ,streetInputLayout,districInputLayout,areaInputLayout,latInputLayout, lngInputLayout;
+    private ImageView store_ImageView;
+    private Boolean aBoolean = true;
+    private String pathImageString, nameImageString;
+    private Uri uri;
     private Vibrator vibrator;
     String lattitude ;
     String longitude;
@@ -48,16 +62,62 @@ public class Build_Store extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         bildwidget();
         buttoncontroller();
+        ImageController();
     }
 
+    private void ImageController() {
+        store_ImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //choose image from SD card
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent,"โปรดเลือกรูปภาพ"),1);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            aBoolean = false;
+            uri = data.getData();
+                //SetUp Image Choose To ImageView
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                    store_ImageView.setImageBitmap(bitmap);
+            }
+                catch (Exception e) {
+                    e.printStackTrace();
+//                    Toast.makeText(Build_Store.this,"กรุณาเลือกรูปภาพ",Toast.LENGTH_LONG).show();
+            }
+                //Find Path Image Choose
+            String[] strings = new String[]{MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(uri, strings, null, null, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                pathImageString = cursor.getString(index);
+
+            } else {
+                pathImageString = uri.getPath();
+            }
+            Log.d("pathImage", "pathImage ==> " + pathImageString);
+        }
+    }
 
     private void buttoncontroller() {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 submitform();
-            }
 
+            }
             private void submitform() {
 
                 if (!checkName()) {
@@ -126,7 +186,12 @@ public class Build_Store extends AppCompatActivity {
                     vibrator.vibrate(120);
                     return;
                 }
-
+                if (!checkImage()) {
+                    costEditText.setAnimation(animshake);
+                    costEditText.startAnimation(animshake);
+                    vibrator.vibrate(120);
+                    return;
+                }
                 name_storeInputLayout.setErrorEnabled(false);
                 repairInputLayout.setErrorEnabled(false);
                 start_timeInputLayout.setErrorEnabled(false);
@@ -138,7 +203,20 @@ public class Build_Store extends AppCompatActivity {
                 areaInputLayout.setErrorEnabled(false);
                 latInputLayout.setErrorEnabled(false);
                 lngInputLayout.setErrorEnabled(false);
-                Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
+
+                send_data();
+
+            }
+            private void send_data() {
+
+            }
+            private boolean checkImage() {
+                if (aBoolean) {
+                    Toast.makeText(getApplicationContext(), "กรุณเลือกรูปภาพ", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                return true;
             }
 
             private boolean checkLng() {
@@ -273,6 +351,7 @@ public class Build_Store extends AppCompatActivity {
                     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
             }
+
         });
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -329,7 +408,7 @@ public class Build_Store extends AppCompatActivity {
                             Double lng = location.getLongitude();
                              lattitude = String.valueOf(lat);
                              longitude = String.valueOf(lng);
-                            Log.d("location", "location==>"+lat.toString());
+//                                Log.d("location", "location==>"+lat.toString());
                             latEditText.setText("" + lat);
                             lngEditText.setText("" + lng);
                         }
@@ -343,7 +422,7 @@ public class Build_Store extends AppCompatActivity {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(Build_Store.this);
                 builder.setMessage("กรุณาเชื่อมต่อกับGPSด้วยครับ")
                         .setCancelable(false)
-                        .setPositiveButton("ตก", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
                                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                             }
@@ -383,6 +462,7 @@ public class Build_Store extends AppCompatActivity {
         latEditText = (EditText) findViewById(R.id.lat_store);
         lngEditText = (EditText) findViewById(R.id.lng_store);
         locationButton = (Button) findViewById(R.id.location_store);
+        store_ImageView = (ImageView) findViewById(R.id.picture_store);
         okButton = (Button) findViewById(R.id.ok);
         backButton = (Button) findViewById(R.id.back);
     }

@@ -3,6 +3,8 @@
     package="com.example.phobia.grab_technicain">
     <!--RequestInstallApplicationOnMobile-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--ReadApplicationOnMobile-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!--RequestUsingInternet-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--FunctionVibrate-->
