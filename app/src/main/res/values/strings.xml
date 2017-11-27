@@ -64,4 +64,6 @@
                     <string name="err_msg_required">กรุณากรอกข้อมูลให้ครบ</string>
                     <string name="err_msg_repair">Please enter a Repair</string>
                     <string name="err_msg_start_location">กรุณากดตรงดูที่ตั้ง</string>
+                        <!--CheckLocation-->
+                            <string name="LocationTrace">ไม่สามรถระบุตำแหน่งของคุณได้</string>
 </resources>

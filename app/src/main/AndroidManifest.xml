@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.phobia.grab_technicain">
-
+    <!--RequestInstallApplicationOnMobile-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--RequestUsingInternet-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--FunctionVibrate-->
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <!--GetLocation-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use

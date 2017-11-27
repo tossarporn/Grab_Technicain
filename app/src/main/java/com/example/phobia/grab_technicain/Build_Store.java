@@ -1,12 +1,21 @@
 package com.example.phobia.grab_technicain;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -24,7 +33,11 @@ public class Build_Store extends AppCompatActivity {
     private TextInputLayout name_storeInputLayout,repairInputLayout,start_timeInputLayout,end_timeInputLayout,costInputLayout,home_numInputLayout
                             ,streetInputLayout,districInputLayout,areaInputLayout,latInputLayout, lngInputLayout;
     private Vibrator vibrator;
+    String lattitude ;
+    String longitude;
     Animation animshake;
+    static final int Request_Location = 1;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +45,11 @@ public class Build_Store extends AppCompatActivity {
         setContentView(R.layout.activity_build__store);
         animshake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         bildwidget();
         buttoncontroller();
     }
+
 
     private void buttoncontroller() {
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -265,6 +280,82 @@ public class Build_Store extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),Main_Technician.class));
             }
+        });
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    buildAlertMessageNoGps();
+                }
+
+                else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    getLocation();
+                }
+            }
+
+            private void getLocation() {
+                if (ActivityCompat.checkSelfPermission(Build_Store.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                        (Build_Store.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(Build_Store.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_Location);
+
+                }
+
+                else {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                    Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    Location location2 = locationManager.getLastKnownLocation(LocationManager. PASSIVE_PROVIDER);
+                        if (location!=null) {
+                            Double lat = location.getLatitude();
+                            Double lng = location.getLongitude();
+                             lattitude = String.valueOf(lat);
+                             longitude = String.valueOf(lng);
+                            latEditText.setText(" "+lat);
+                            lngEditText.setText(" "+lng);
+                        }
+                        else if (location1 != null) {
+                            Double lat = location.getLatitude();
+                            Double lng = location.getLongitude();
+                             lattitude = String.valueOf(lat);
+                             longitude = String.valueOf(lng);
+                            latEditText.setText("" + lat);
+                            lngEditText.setText("" + lng);
+                        }
+                          else if (location2 != null) {
+                            Double lat = location.getLatitude();
+                            Double lng = location.getLongitude();
+                             lattitude = String.valueOf(lat);
+                             longitude = String.valueOf(lng);
+                            Log.d("location", "location==>"+lat.toString());
+                            latEditText.setText("" + lat);
+                            lngEditText.setText("" + lng);
+                        }
+                          else {
+                            Toast.makeText(Build_Store.this, "ไม่สามรถระบุตำแหน่งของคุณได้", Toast.LENGTH_SHORT).show();
+                        }
+                }
+            }
+
+            private void buildAlertMessageNoGps() {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Build_Store.this);
+                builder.setMessage("กรุณาเชื่อมต่อกับGPSด้วยครับ")
+                        .setCancelable(false)
+                        .setPositiveButton("ตก", new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            }
+                        })
+                        .setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+                            }
+                        });
+                final AlertDialog alert = builder.create();
+                alert.show();
+        }
         });
     }
 
