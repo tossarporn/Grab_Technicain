@@ -38,10 +38,10 @@ import java.io.File;
 
 public class Build_Store extends AppCompatActivity {
     private EditText name_storeEditText,repairEditText,start_timeEditText,end_timeEditText,costEditText,home_numberEditText,
-                     streetEditText,districEditText,areaEditText,latEditText,lngEditText;
+                     streetEditText,districEditText,areaEditText,latEditText,lngEditText,tel_EditText;
     private Button okButton,backButton,locationButton;
     private TextInputLayout name_storeInputLayout,repairInputLayout,start_timeInputLayout,end_timeInputLayout,costInputLayout,home_numInputLayout
-                            ,streetInputLayout,districInputLayout,areaInputLayout,latInputLayout, lngInputLayout;
+                            ,streetInputLayout,districInputLayout,areaInputLayout,latInputLayout, lngInputLayout,telInputLayout;
     private ImageView store_ImageView;
     private Boolean aBoolean = true;
     private String pathImageString, nameImageString;
@@ -70,10 +70,9 @@ public class Build_Store extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //choose image from SD card
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
+                Intent intent = new Intent(Intent.ACTION_PICK);//Choose Image Or Picture from SDCard
+                intent.setType("image/*");//Choose Image Or Picture all Type
                 startActivityForResult(Intent.createChooser(intent,"โปรดเลือกรูปภาพ"),1);
-
             }
         });
 
@@ -92,7 +91,6 @@ public class Build_Store extends AppCompatActivity {
             }
                 catch (Exception e) {
                     e.printStackTrace();
-//                    Toast.makeText(Build_Store.this,"กรุณาเลือกรูปภาพ",Toast.LENGTH_LONG).show();
             }
                 //Find Path Image Choose
             String[] strings = new String[]{MediaStore.Images.Media.DATA};
@@ -119,105 +117,42 @@ public class Build_Store extends AppCompatActivity {
 
             }
             private void submitform() {
+                if (!checkName()||!checkRepair()||!checkTel()||!checkStart_Time()||!checkEnd_time()||!checkCost()
+                ||!checkHome_number()||!checkStreet()||!checkDistric()||!checkArea()||!checkLat()||!checkLng()) {
+                    name_storeInputLayout.setErrorEnabled(false);
+                    repairInputLayout.setErrorEnabled(false);
+                    start_timeInputLayout.setErrorEnabled(false);
+                    end_timeInputLayout.setErrorEnabled(false);
+                    costInputLayout.setErrorEnabled(false);
+                    home_numInputLayout.setErrorEnabled(false);
+                    streetInputLayout.setErrorEnabled(false);
+                    districInputLayout.setErrorEnabled(false);
+                    areaInputLayout.setErrorEnabled(false);
+                    latInputLayout.setErrorEnabled(false);
+                    lngInputLayout.setErrorEnabled(false);
+                    telInputLayout.setErrorEnabled(false);
+                }//CheckErrorEditText
 
-                if (!checkName()) {
-                    name_storeEditText.setAnimation(animshake);
-                    name_storeEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkRepair()) {
-                    repairEditText.setAnimation(animshake);
-                    repairEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkStart_Time()) {
-                    start_timeEditText.setAnimation(animshake);
-                    start_timeEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkEnd_time()) {
-                    end_timeEditText.setAnimation(animshake);
-                    end_timeEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkCost()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkHome_number()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkStreet()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkDistric()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkArea()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkLat()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkLng()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                if (!checkImage()) {
-                    costEditText.setAnimation(animshake);
-                    costEditText.startAnimation(animshake);
-                    vibrator.vibrate(120);
-                    return;
-                }
-                name_storeInputLayout.setErrorEnabled(false);
-                repairInputLayout.setErrorEnabled(false);
-                start_timeInputLayout.setErrorEnabled(false);
-                end_timeInputLayout.setErrorEnabled(false);
-                costInputLayout.setErrorEnabled(false);
-                home_numInputLayout.setErrorEnabled(false);
-                streetInputLayout.setErrorEnabled(false);
-                districInputLayout.setErrorEnabled(false);
-                areaInputLayout.setErrorEnabled(false);
-                latInputLayout.setErrorEnabled(false);
-                lngInputLayout.setErrorEnabled(false);
-                Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
-
-                send_data();
-
-            }
-            private void send_data() {
-
-            }
-            private boolean checkImage() {
-                if (aBoolean) {
+                else if (aBoolean) {
                     Toast.makeText(getApplicationContext(), "กรุณเลือกรูปภาพ", Toast.LENGTH_LONG).show();
+                }//CheckImage
+
+                else {
+                    Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
+                }//UploadToServer
+            }
+
+            private boolean checkTel() {
+                if (tel_EditText.getText().toString().trim().isEmpty()) {
+                    telInputLayout.setErrorEnabled(true);
+                    tel_EditText.setError(getString(R.string.err_msg_required));
+                    requestFocus(tel_EditText);
                     return false;
                 }
+                telInputLayout.setErrorEnabled(false);
                 return true;
             }
+
 
             private boolean checkLng() {
                 if (lngEditText.getText().toString().trim().isEmpty()) {
@@ -296,7 +231,6 @@ public class Build_Store extends AppCompatActivity {
                 return true;
             }
 
-
             private boolean checkName() {
                 if (name_storeEditText.getText().toString().trim().isEmpty()) {
                     name_storeInputLayout.setErrorEnabled(true);
@@ -309,7 +243,6 @@ public class Build_Store extends AppCompatActivity {
             }
 
             private boolean checkRepair() {
-//                String repair = repairEditText.getText().toString().trim();
                 if (repairEditText.getText().toString().trim().isEmpty()) {
                     repairInputLayout.setErrorEnabled(true);
                     repairEditText.setError(getString(R.string.err_msg_required));
@@ -341,7 +274,6 @@ public class Build_Store extends AppCompatActivity {
                 return true;
             }
 
-
 //            private  boolean isValidRepair(String repair) {
 //                return !TextUtils.isEmpty(repair) && android.util.Patterns.EMAIL_ADDRESS.matcher(repair).matches();
 //            }
@@ -351,7 +283,6 @@ public class Build_Store extends AppCompatActivity {
                     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
             }
-
         });
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -420,14 +351,14 @@ public class Build_Store extends AppCompatActivity {
 
             private void buildAlertMessageNoGps() {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(Build_Store.this);
-                builder.setMessage("กรุณาเชื่อมต่อกับGPSด้วยครับ")
+                builder.setMessage("ต้องการระบุตำแหน่งของคุณ")
                         .setCancelable(false)
-                        .setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("ใช่", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
                                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                             }
                         })
-                        .setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("ไม่", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, final int id) {
                                 dialog.cancel();
                             }
@@ -450,6 +381,8 @@ public class Build_Store extends AppCompatActivity {
         areaInputLayout = (TextInputLayout) findViewById(R.id.area_address);
         latInputLayout = (TextInputLayout) findViewById(R.id.lat_location);
         lngInputLayout = (TextInputLayout) findViewById(R.id.lng_location);
+        telInputLayout = (TextInputLayout) findViewById(R.id.Tel);
+
         name_storeEditText = (EditText) findViewById(R.id.name_store);
         repairEditText = (EditText) findViewById(R.id.repair);
         start_timeEditText = (EditText) findViewById(R.id.start_time);
@@ -461,6 +394,7 @@ public class Build_Store extends AppCompatActivity {
         areaEditText = (EditText) findViewById(R.id.area);
         latEditText = (EditText) findViewById(R.id.lat_store);
         lngEditText = (EditText) findViewById(R.id.lng_store);
+        tel_EditText = (EditText) findViewById(R.id.Tel_technician);
         locationButton = (Button) findViewById(R.id.location_store);
         store_ImageView = (ImageView) findViewById(R.id.picture_store);
         okButton = (Button) findViewById(R.id.ok);

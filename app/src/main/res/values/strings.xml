@@ -47,18 +47,19 @@
     <string name="log_out">ออกจากระบบ</string>
 
     <!--build_store-->
-    <string name="time_start">เวลาเปิด</string>
-    <string name="time_end">เวลาปิด</string>
+    <string name="time_start">เวลาเปิด :</string>
+    <string name="time_end">เวลาปิด :</string>
     <string name="store_address">ใส่ที่อยู่ร้าน :</string>
-    <string name="store">กรุณากรอกชื่อร้าน</string>
-    <string name="equipment_cost">ราคาเริ่มต้น</string>
+    <string name="store">กรุณากรอกชื่อร้าน :</string>
+    <string name="equipment_cost">ราคาเริ่มต้น :</string>
     <string name="location">ที่ตั้ง :</string>
     <string name="look_location">ดูที่ตั้ง</string>
+    <string name="tel">เบอร์โทรศัพท์ :</string>
         <!--build_store_address-->
-            <string name="street">ถนน</string>
-            <string name="District">แขวง</string>
-            <string name="county">เขต</string>
-            <string name="house_number">บ้านเลขที่</string>
+            <string name="street">ถนน :</string>
+            <string name="District">แขวง :</string>
+            <string name="county">เขต :</string>
+            <string name="house_number">บ้านเลขที่ :</string>
                 <!--CheckErrorEditText-->
                     <string name="err_msg_name">Please enter a Name</string>
                     <string name="err_msg_required">กรุณากรอกข้อมูลให้ครบ</string>
