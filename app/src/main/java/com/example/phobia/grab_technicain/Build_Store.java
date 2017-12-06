@@ -8,10 +8,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -32,7 +34,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.jibble.simpleftp.SimpleFTP;
 
 import java.io.File;
 
@@ -47,11 +53,18 @@ public class Build_Store extends AppCompatActivity {
     private String pathImageString, nameImageString;
     private Uri uri;
     private Vibrator vibrator;
+    private String TAG = "Check Upload";
+
+    private Spinner repiarSpinner;
+
+
+
     String lattitude ;
     String longitude;
     Animation animshake;
     static final int Request_Location = 1;
     LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +76,7 @@ public class Build_Store extends AppCompatActivity {
         bildwidget();
         buttoncontroller();
         ImageController();
+
     }
 
     private void ImageController() {
@@ -75,7 +89,6 @@ public class Build_Store extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"โปรดเลือกรูปภาพ"),1);
             }
         });
-
     }
 
     @Override
@@ -117,10 +130,10 @@ public class Build_Store extends AppCompatActivity {
 
             }
             private void submitform() {
-                if (!checkName()||!checkRepair()||!checkTel()||!checkStart_Time()||!checkEnd_time()||!checkCost()
-                ||!checkHome_number()||!checkStreet()||!checkDistric()||!checkArea()||!checkLat()||!checkLng()) {
+
+                if (!checkName()||!checkTel()||!checkStart_Time()||!checkEnd_time()||!checkCost()
+                        ||!checkHome_number()||!checkStreet()||!checkDistric()||!checkArea()||!checkLat()||!checkLng()) {
                     name_storeInputLayout.setErrorEnabled(false);
-                    repairInputLayout.setErrorEnabled(false);
                     start_timeInputLayout.setErrorEnabled(false);
                     end_timeInputLayout.setErrorEnabled(false);
                     costInputLayout.setErrorEnabled(false);
@@ -134,18 +147,20 @@ public class Build_Store extends AppCompatActivity {
                 }//CheckErrorEditText
 
                 else if (aBoolean) {
-                    Toast.makeText(getApplicationContext(), "กรุณเลือกรูปภาพ", Toast.LENGTH_LONG).show();
+//                    MyAlertDialog alertDialog = new MyAlertDialog(getApplicationContext());
+//                    alertDialog.myDialog("ยังไม่เลือกรูปภาพ", "กรุณาเลือกรูปภาพ");
                 }//CheckImage
 
                 else {
                     Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
+                    UploadToServer();
                 }//UploadToServer
-            }
-
+            }//Method submitform
             private boolean checkTel() {
                 if (tel_EditText.getText().toString().trim().isEmpty()) {
                     telInputLayout.setErrorEnabled(true);
-                    tel_EditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเบอร์โทร");
                     requestFocus(tel_EditText);
                     return false;
                 }
@@ -157,7 +172,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkLng() {
                 if (lngEditText.getText().toString().trim().isEmpty()) {
                     lngInputLayout.setErrorEnabled(true);
-                    lngEditText.setError(getString(R.string.err_msg_start_location));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากดดูตำแหน่ง");
                     requestFocus(lngEditText);
                     return false;
                 }
@@ -168,7 +184,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkLat() {
                 if (latEditText.getText().toString().trim().isEmpty()) {
                     latInputLayout.setErrorEnabled(true);
-                    latEditText.setError(getString(R.string.err_msg_start_location));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากดดูตำแหน่ง");
                     requestFocus(latEditText);
                     return false;
                 }
@@ -179,7 +196,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkArea() {
                 if (areaEditText.getText().toString().trim().isEmpty()) {
                     areaInputLayout.setErrorEnabled(true);
-                    areaEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเขต");
                     requestFocus(areaEditText);
                     return false;
                 }
@@ -190,7 +208,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkDistric() {
                 if (districEditText.getText().toString().trim().isEmpty()) {
                     districInputLayout.setErrorEnabled(true);
-                    districEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกแขวง");
                     requestFocus(districEditText);
                     return false;
                 }
@@ -201,7 +220,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkStreet() {
                 if (streetEditText.getText().toString().trim().isEmpty()) {
                     streetInputLayout.setErrorEnabled(true);
-                    streetEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกชื่อถนน");
                     requestFocus(streetEditText);
                     return false;
                 }
@@ -212,7 +232,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkHome_number() {
                 if (home_numberEditText.getText().toString().trim().isEmpty()) {
                     home_numInputLayout.setErrorEnabled(true);
-                    home_numberEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเลขที่บ้าน");
                     requestFocus(home_numberEditText);
                     return false;
                 }
@@ -223,7 +244,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkCost() {
                 if (costEditText.getText().toString().trim().isEmpty()) {
                     costInputLayout.setErrorEnabled(true);
-                    costEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกราคาเริ่มต้น");
                     requestFocus(costEditText);
                     return false;
                 }
@@ -234,7 +256,8 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkName() {
                 if (name_storeEditText.getText().toString().trim().isEmpty()) {
                     name_storeInputLayout.setErrorEnabled(true);
-                    name_storeEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกชื่อร้าน");
                     requestFocus(name_storeEditText);
                     return false;
                 }
@@ -242,21 +265,25 @@ public class Build_Store extends AppCompatActivity {
                 return true;
             }
 
-            private boolean checkRepair() {
-                if (repairEditText.getText().toString().trim().isEmpty()) {
-                    repairInputLayout.setErrorEnabled(true);
-                    repairEditText.setError(getString(R.string.err_msg_required));
-                    requestFocus(repairEditText);
-                    return false;
-                }
-                repairInputLayout.setErrorEnabled(false);
-                return true;
-            }
+//            private boolean checkRepair() {
+////                int selectedItemOfMySpinner = repiarSpinner.getSelectedItemPosition();
+////                String actualPositionOfMySpinner = (String) repiarSpinner.getItemAtPosition(selectedItemOfMySpinner);
+////                if (actualPositionOfMySpinner.isEmpty()) {
+//////                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+//////                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ", "5678");
+////
+////                    requestFocus(repiarSpinner);
+//                    return false;
+//                }
+//                start_timeInputLayout.setErrorEnabled(false);
+//                return true;
+//            }
 
             private boolean checkStart_Time() {
                 if (start_timeEditText.getText().toString().trim().isEmpty()) {
                     start_timeInputLayout.setErrorEnabled(true);
-                    start_timeInputLayout.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเวลาเปิด");
                     requestFocus(start_timeEditText);
                     return false;
                 }
@@ -266,13 +293,47 @@ public class Build_Store extends AppCompatActivity {
             private boolean checkEnd_time() {
                 if (end_timeEditText.getText().toString().trim().isEmpty()) {
                     end_timeInputLayout.setErrorEnabled(true);
-                    end_timeEditText.setError(getString(R.string.err_msg_required));
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเวลาปิด");
                     requestFocus(end_timeEditText);
                     return false;
                 }
                 end_timeInputLayout.setErrorEnabled(false);
                 return true;
             }
+
+
+
+
+            private void UploadToServer() {
+                try {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy
+                            .Builder()
+                            .permitAll()
+                            .build();
+                    StrictMode.setThreadPolicy(policy);//Request ThreadPolicy
+
+                    SimpleFTP simpleFTP = new SimpleFTP();
+                    simpleFTP.connect("127.0.0.1",21,"root","root");
+                    simpleFTP.bin();
+                    simpleFTP.cwd("img_store");
+                    simpleFTP.stor(new File(pathImageString));
+                    simpleFTP.disconnect();
+
+                    nameImageString = "http://127.0.0.1:8081/Final_Project/img_store"+pathImageString.substring(pathImageString.lastIndexOf("/"));
+                    Log.d(TAG,"Image==>"+nameImageString);
+
+                }
+
+                catch (Exception e) {
+                    Log.d(" SimpleFTP", " SimpleFTP upload ==> " + e.toString());
+                }
+            }//Method UploadToServer
+
+
+
+
+
 
 //            private  boolean isValidRepair(String repair) {
 //                return !TextUtils.isEmpty(repair) && android.util.Patterns.EMAIL_ADDRESS.matcher(repair).matches();
@@ -371,7 +432,6 @@ public class Build_Store extends AppCompatActivity {
 
     private void bildwidget() {
         name_storeInputLayout = (TextInputLayout) findViewById(R.id.name);
-        repairInputLayout = (TextInputLayout) findViewById(R.id.repair_equipment);
         start_timeInputLayout = (TextInputLayout) findViewById(R.id.time_work_begin);
         end_timeInputLayout = (TextInputLayout) findViewById(R.id.time_work_end);
         costInputLayout = (TextInputLayout) findViewById(R.id.cost_begin);
@@ -383,8 +443,9 @@ public class Build_Store extends AppCompatActivity {
         lngInputLayout = (TextInputLayout) findViewById(R.id.lng_location);
         telInputLayout = (TextInputLayout) findViewById(R.id.Tel);
 
+        repiarSpinner = (Spinner) findViewById(R.id.Maintenance_spinner);
+
         name_storeEditText = (EditText) findViewById(R.id.name_store);
-        repairEditText = (EditText) findViewById(R.id.repair);
         start_timeEditText = (EditText) findViewById(R.id.start_time);
         end_timeEditText = (EditText) findViewById(R.id.end_time);
         costEditText = (EditText) findViewById(R.id.begin_cost);
@@ -397,6 +458,7 @@ public class Build_Store extends AppCompatActivity {
         tel_EditText = (EditText) findViewById(R.id.Tel_technician);
         locationButton = (Button) findViewById(R.id.location_store);
         store_ImageView = (ImageView) findViewById(R.id.picture_store);
+
         okButton = (Button) findViewById(R.id.ok);
         backButton = (Button) findViewById(R.id.back);
     }

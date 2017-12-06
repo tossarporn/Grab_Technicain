@@ -5,7 +5,7 @@ package com.example.phobia.grab_technicain;
  */
 
 public class myconfig {
-    private String ip = "192.168.1.42";
+    private String ip = "10.5.6.98";
     private String port = "8081";
     private String register = "http://"+ip+":"+port+"/Final_Project/service/register.php";
     private String login = "http://"+ip+":"+port+"/Final_Project/service/login.php";
