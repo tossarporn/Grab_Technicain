@@ -30,6 +30,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
@@ -39,8 +41,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jibble.simpleftp.SimpleFTP;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
 public class Build_Store extends AppCompatActivity {
     private EditText name_storeEditText,repairEditText,start_timeEditText,end_timeEditText,costEditText,home_numberEditText,
@@ -56,7 +64,7 @@ public class Build_Store extends AppCompatActivity {
     private String TAG = "Check Upload";
 
     private Spinner repiarSpinner;
-
+    SpinnerDialog spinnerDialog;
 
 
     String lattitude ;
@@ -64,7 +72,7 @@ public class Build_Store extends AppCompatActivity {
     Animation animshake;
     static final int Request_Location = 1;
     LocationManager locationManager;
-
+    List<String> spinnerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +81,54 @@ public class Build_Store extends AppCompatActivity {
         animshake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
         bildwidget();
         buttoncontroller();
         ImageController();
 
+        Getspinner();
+
+    }
+
+    private void Getspinner() {
+        get_data dialog_area = new get_data(getApplicationContext());
+        myconfig dialog_config = new myconfig();
+                dialog_area.execute(dialog_config.getGet_Area());
+        try {
+
+            String str_all_area = dialog_area.get().toString();
+            JSONArray all_areaJsonArray = new JSONArray(str_all_area);
+            Log.d("getSpinner", "getSpinner==>" + all_areaJsonArray.toString());
+            for (int i = 0;i<all_areaJsonArray.length();i++) {
+                JSONObject jsoon_areaObject = all_areaJsonArray.getJSONObject(i);
+                spinnerList.add(jsoon_areaObject.getString("area_name"));
+            }
+
+        }
+
+        catch (Exception dialog) {
+            Log.d("getSpinner", "getSpinner==>" + dialog.toString());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,spinnerList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        repiarSpinner.setAdapter(adapter);
+
+        repiarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = repiarSpinner.getSelectedItem().toString();
+                    repiarSpinner.setPrompt("กรุณาเลือกเขต");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณาเลือกเขต");
+            }
+        });
     }
 
     private void ImageController() {
@@ -146,16 +198,23 @@ public class Build_Store extends AppCompatActivity {
                     telInputLayout.setErrorEnabled(false);
                 }//CheckErrorEditText
 
-                else if (aBoolean) {
-//                    MyAlertDialog alertDialog = new MyAlertDialog(getApplicationContext());
-//                    alertDialog.myDialog("ยังไม่เลือกรูปภาพ", "กรุณาเลือกรูปภาพ");
-                }//CheckImage
+                else if (repiarSpinner.getSelectedItem()=="Select Please") {
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณาเลือกเขต");
 
-                else {
-                    Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
-                    UploadToServer();
-                }//UploadToServer
-            }//Method submitform
+                }
+                else if (aBoolean) {
+                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                    alertDialog.myDialog("ยังไม่เลือกรูปภาพ", "กรุณาเลือกรูปภาพ");
+                    }//CheckImage
+
+                    else {
+                        Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
+                        UploadToServer();
+                    }//UploadToServer}
+                }//Method submitform
+
+
             private boolean checkTel() {
                 if (tel_EditText.getText().toString().trim().isEmpty()) {
                     telInputLayout.setErrorEnabled(true);
