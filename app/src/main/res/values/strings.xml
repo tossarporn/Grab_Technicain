@@ -67,4 +67,18 @@
                     <string name="err_msg_start_location">กรุณากดตรงดูที่ตั้ง</string>
                         <!--CheckLocation-->
                             <string name="LocationTrace">ไม่สามรถระบุตำแหน่งของคุณได้</string>
+    <!--SpinnerArray_GetArea-->
+    <string-array name="get_area">
+        <item>กรุณาเลือกเขต</item>
+        <item>เขตพระนคร</item>
+        <item>เขตดุสิต</item>
+        <item>เขตหนองจอก</item>
+        <item>เขตบางรัก</item>
+        <item>เขตบางเขน</item>
+        <item>เขตบางกะปิ</item>
+        <item>เขตปทุมวัน</item>
+        <item>เขตป้อมปราบศัตรูพ่าย </item>
+        <item>เขตพระโขนง</item>
+        <item>เขตมีนบุรี</item>
+    </string-array>
 </resources>

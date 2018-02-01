@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -47,7 +48,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
 public class Build_Store extends AppCompatActivity {
@@ -62,17 +65,26 @@ public class Build_Store extends AppCompatActivity {
     private Uri uri;
     private Vibrator vibrator;
     private String TAG = "Check Upload";
+    private String TAG_SPINNER = "getSpinner";
+    private Spinner repair_Spinner;
+    private Spinner Area_Spinner;
+    private String name_store,equipmentString,telString,time_startString,time_endString,begincostString,
+                  home_memberString,streetString,district,areaString,latString,lngString;
 
-    private Spinner repiarSpinner;
-    SpinnerDialog spinnerDialog;
 
+    ArrayList<String> item = new ArrayList<>();
+    ArrayList<String> item_index = new ArrayList<>();
+
+    ArrayList<String> item_equipment = new ArrayList<>();
+    ArrayList<String> index_equipment = new ArrayList<>();
 
     String lattitude ;
     String longitude;
     Animation animshake;
     static final int Request_Location = 1;
     LocationManager locationManager;
-    List<String> spinnerList = new ArrayList<>();
+
+    myconfig config = new myconfig();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,40 +99,86 @@ public class Build_Store extends AppCompatActivity {
         buttoncontroller();
         ImageController();
 
-        Getspinner();
+        //ShowSpinner
+        Getspinner_equipment();
+        Getspinner_area();
+
+
 
     }
 
-    private void Getspinner() {
-        get_data dialog_area = new get_data(getApplicationContext());
-        myconfig dialog_config = new myconfig();
-                dialog_area.execute(dialog_config.getGet_Area());
-        try {
 
-            String str_all_area = dialog_area.get().toString();
-            JSONArray all_areaJsonArray = new JSONArray(str_all_area);
-            Log.d("getSpinner", "getSpinner==>" + all_areaJsonArray.toString());
-            for (int i = 0;i<all_areaJsonArray.length();i++) {
-                JSONObject jsoon_areaObject = all_areaJsonArray.getJSONObject(i);
-                spinnerList.add(jsoon_areaObject.getString("area_name"));
+    private void Getspinner_area() {
+        get_data data_area = new get_data(getApplicationContext());
+        data_area.execute(config.getGet_Area());
+        try {
+            String str_area = data_area.get().toString();
+            JSONArray get_all_area = new JSONArray(str_area);
+            Log.d("TAG_SPINNER", "getSpinner_Area==>"+get_all_area.toString());
+            for (int i = 0; i<get_all_area.length();i++) {
+                JSONObject json_getArea = get_all_area.getJSONObject(i);
+
+                item.add(json_getArea.getString("area_name"));
+                item_index.add(json_getArea.getString("id"));
+                Log.d("TAG_SPINNER", "getSpinner_Area==>"+get_all_area.toString());
+            }
+        }
+
+        catch (Exception e) {
+        }
+        ArrayAdapter<String> areaAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,item);
+        areaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Area_Spinner.setAdapter(areaAdapter);
+
+        Area_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Area_Spinner.setPrompt("เลือกเขตที่ต้องการ");
+                Toast.makeText(Build_Store.this,"id"+item_index.get(i),Toast.LENGTH_LONG).show();
             }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+                alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณาเลือกเขต");
+            }
+        });
+    }
+
+    private void Getspinner_equipment() {
+        get_data get_equipment = new get_data(getApplicationContext());
+        get_equipment.execute(config.getEquipment());
+        try {
+
+            String str_equipment = get_equipment.get().toString();
+            JSONArray all_areaJsonArray = new JSONArray(str_equipment);
+            Log.d("TAG_SPINNER", "getSpinner_Equipment==>" + all_areaJsonArray.toString());
+
+            for (int i = 0;i<all_areaJsonArray.length();i++) {
+                JSONObject jsoon_areaObject = all_areaJsonArray.getJSONObject(i);
+
+               item_equipment.add(jsoon_areaObject.getString("type_name"));
+                index_equipment.add(jsoon_areaObject.getString("id"));
+
+                Log.d("TAG_SPINNER", "getSpinner==>" +jsoon_areaObject.toString());
+            }
         }
 
         catch (Exception dialog) {
-            Log.d("getSpinner", "getSpinner==>" + dialog.toString());
+
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,spinnerList);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,item_equipment);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        repiarSpinner.setAdapter(adapter);
+        repair_Spinner.setAdapter(adapter);
 
-        repiarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        repair_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = repiarSpinner.getSelectedItem().toString();
-                    repiarSpinner.setPrompt("กรุณาเลือกเขต");
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String repair = repair_Spinner.getSelectedItem().toString();
+                repair_Spinner.setPrompt("เลือกประเภทเครื่องใช้ไฟฟ้า");
+                Toast.makeText(Build_Store.this,"id"+index_equipment.get(position),Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -184,7 +242,7 @@ public class Build_Store extends AppCompatActivity {
             private void submitform() {
 
                 if (!checkName()||!checkTel()||!checkStart_Time()||!checkEnd_time()||!checkCost()
-                        ||!checkHome_number()||!checkStreet()||!checkDistric()||!checkArea()||!checkLat()||!checkLng()) {
+                        ||!checkHome_number()||!checkStreet()||!checkDistric()||!checkLat()||!checkLng()) {
                     name_storeInputLayout.setErrorEnabled(false);
                     start_timeInputLayout.setErrorEnabled(false);
                     end_timeInputLayout.setErrorEnabled(false);
@@ -192,25 +250,64 @@ public class Build_Store extends AppCompatActivity {
                     home_numInputLayout.setErrorEnabled(false);
                     streetInputLayout.setErrorEnabled(false);
                     districInputLayout.setErrorEnabled(false);
-                    areaInputLayout.setErrorEnabled(false);
                     latInputLayout.setErrorEnabled(false);
                     lngInputLayout.setErrorEnabled(false);
                     telInputLayout.setErrorEnabled(false);
                 }//CheckErrorEditText
 
-                else if (repiarSpinner.getSelectedItem()=="Select Please") {
-                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
-                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณาเลือกเขต");
-
-                }
+//                else if (repiarSpinner.getSelectedItem()=="Select Please") {
+//                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+//                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณาเลือกเขต");
+//
+//                }
                 else if (aBoolean) {
                     MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
                     alertDialog.myDialog("ยังไม่เลือกรูปภาพ", "กรุณาเลือกรูปภาพ");
                     }//CheckImage
 
                     else {
-                        Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
-                        UploadToServer();
+//                        Toast.makeText(getApplicationContext(), "สมัครสมาชิคสำเร็จ", Toast.LENGTH_SHORT).show();
+//                        UploadToServer();
+                    myconfig myconfig = new myconfig();
+                    get_data add_technician = new get_data(Build_Store.this);
+
+                    try {
+                        add_technician.execute(myconfig.getDetail_technician()
+                                +"?name_store="+checkName()+"&"
+                                +"ref_type="+repair_Spinner+"&"
+                                +"ref_area="+Area_Spinner+"&"
+                                +"home_number="+checkHome_number()+"&"
+                                +"street="+checkStreet()+"&"
+                                +"distric="+checkDistric()+"&"
+                                +"imaeg_store="+store_ImageView+"&"
+                                +"time_start="+checkStart_Time()+"&"
+                                +"time_end="+checkEnd_time()+"&"
+                                +"tel="+checkTel()+"&"
+                                +"cost_begin="+checkCost()+"&"
+                                +"lat="+checkLat()+"&"
+                                +"lng="+checkLng()
+                        );
+
+                        String technician = add_technician.get().toString();
+                        JSONObject statusObject = new JSONObject(technician);
+                        Boolean statusBoolean = statusObject.getBoolean("status");
+                        String message = statusObject.getString("message");
+
+                        if (statusBoolean == true) {
+
+                            Toast.makeText(Build_Store.this,message,Toast.LENGTH_LONG).show();
+                        }
+
+                        else {
+                            Toast.makeText(Build_Store.this,message,Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                    catch (Exception e) {
+//                        Toast.makeText(Build_Store.this,"Add_Fail",Toast.LENGTH_LONG).show();
+//                        Log.d("Add_Technician","Detail==>"+e.toString());
+                    }
+
                     }//UploadToServer}
                 }//Method submitform
 
@@ -252,17 +349,17 @@ public class Build_Store extends AppCompatActivity {
                 return true;
             }
 
-            private boolean checkArea() {
-                if (areaEditText.getText().toString().trim().isEmpty()) {
-                    areaInputLayout.setErrorEnabled(true);
-                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
-                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเขต");
-                    requestFocus(areaEditText);
-                    return false;
-                }
-                areaInputLayout.setErrorEnabled(false);
-                return true;
-            }
+//            private boolean checkArea() {
+//                if (areaEditText.getText().toString().trim().isEmpty()) {
+//                    areaInputLayout.setErrorEnabled(true);
+//                    MyAlertDialog alertDialog = new MyAlertDialog(Build_Store.this);
+//                    alertDialog.myDialog("กรุณากรอกข้อมูลให้ครบ","กรุณากรอกเขต");
+//                    requestFocus(areaEditText);
+//                    return false;
+//                }
+//                areaInputLayout.setErrorEnabled(false);
+//                return true;
+//            }
 
             private boolean checkDistric() {
                 if (districEditText.getText().toString().trim().isEmpty()) {
@@ -363,36 +460,30 @@ public class Build_Store extends AppCompatActivity {
 
 
 
-
-            private void UploadToServer() {
-                try {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy
-                            .Builder()
-                            .permitAll()
-                            .build();
-                    StrictMode.setThreadPolicy(policy);//Request ThreadPolicy
-
-                    SimpleFTP simpleFTP = new SimpleFTP();
-                    simpleFTP.connect("127.0.0.1",21,"root","root");
-                    simpleFTP.bin();
-                    simpleFTP.cwd("img_store");
-                    simpleFTP.stor(new File(pathImageString));
-                    simpleFTP.disconnect();
-
-                    nameImageString = "http://127.0.0.1:8081/Final_Project/img_store"+pathImageString.substring(pathImageString.lastIndexOf("/"));
-                    Log.d(TAG,"Image==>"+nameImageString);
-
-                }
-
-                catch (Exception e) {
-                    Log.d(" SimpleFTP", " SimpleFTP upload ==> " + e.toString());
-                }
-            }//Method UploadToServer
-
-
-
-
-
+//            private void UploadToServer() {
+//                try {
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy
+//                            .Builder()
+//                            .permitAll()
+//                            .build();
+//                    StrictMode.setThreadPolicy(policy);//Request ThreadPolicy
+//
+//                    SimpleFTP simpleFTP = new SimpleFTP();
+//                    simpleFTP.connect("127.0.0.1",21,"root","root");
+//                    simpleFTP.bin();
+//                    simpleFTP.cwd("img_store");
+//                    simpleFTP.stor(new File(pathImageString));
+//                    simpleFTP.disconnect();
+//
+//                    nameImageString = "http://127.0.0.1:8081/Final_Project/img_store"+pathImageString.substring(pathImageString.lastIndexOf("/"));
+//                    Log.d(TAG,"Image==>"+nameImageString);
+//
+//                }
+//
+//                catch (Exception e) {
+//                    Log.d(" SimpleFTP", " SimpleFTP upload ==> " + e.toString());
+//                }
+            //}//Method UploadToServer
 
 //            private  boolean isValidRepair(String repair) {
 //                return !TextUtils.isEmpty(repair) && android.util.Patterns.EMAIL_ADDRESS.matcher(repair).matches();
@@ -497,12 +588,13 @@ public class Build_Store extends AppCompatActivity {
         home_numInputLayout = (TextInputLayout) findViewById(R.id.house_number);
         streetInputLayout = (TextInputLayout) findViewById(R.id.streert_address);
         districInputLayout = (TextInputLayout) findViewById(R.id.distric_address);
-        areaInputLayout = (TextInputLayout) findViewById(R.id.area_address);
+//        areaInputLayout = (TextInputLayout) findViewById(R.id.area_spinner);
         latInputLayout = (TextInputLayout) findViewById(R.id.lat_location);
         lngInputLayout = (TextInputLayout) findViewById(R.id.lng_location);
         telInputLayout = (TextInputLayout) findViewById(R.id.Tel);
 
-        repiarSpinner = (Spinner) findViewById(R.id.Maintenance_spinner);
+        repair_Spinner = (Spinner) findViewById(R.id.Maintenance_spinner);
+        Area_Spinner = (Spinner) findViewById(R.id.area_spinner);
 
         name_storeEditText = (EditText) findViewById(R.id.name_store);
         start_timeEditText = (EditText) findViewById(R.id.start_time);
@@ -511,7 +603,7 @@ public class Build_Store extends AppCompatActivity {
         home_numberEditText = (EditText) findViewById(R.id.home_number);
         districEditText = (EditText) findViewById(R.id.district);
         streetEditText = (EditText) findViewById(R.id.street);
-        areaEditText = (EditText) findViewById(R.id.area);
+//        areaEditText = (EditText) findViewById(R.id.area);
         latEditText = (EditText) findViewById(R.id.lat_store);
         lngEditText = (EditText) findViewById(R.id.lng_store);
         tel_EditText = (EditText) findViewById(R.id.Tel_technician);

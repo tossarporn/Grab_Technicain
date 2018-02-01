@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,6 +62,7 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
        mapFragment.getMapAsync(this);
+
         iniItem();
         spinnerDialog = new SpinnerDialog(customer.this,item,"Select Area");
 
@@ -71,7 +73,7 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
                 search_technician.putExtra("area_id",item_index.get(position));
                 startActivity(search_technician);
 
-//                Toast.makeText(customer.this,"select"+item_index.get(position),Toast.LENGTH_LONG).show();
+//                Toast.makeText(customer.this,"id"+item_index.get(position),Toast.LENGTH_LONG).show();
 
             }
         });
@@ -84,6 +86,7 @@ public class customer extends AppCompatActivity implements OnMapReadyCallback {
         try{
             String str_all_area = all_area.get().toString();
             JSONArray all_area_Array = new JSONArray(str_all_area);
+
             for (int index = 0 ;index<all_area_Array.length(); index++ ){
                 JSONObject json_area = all_area_Array.getJSONObject(index);
 
